@@ -11,10 +11,8 @@ const listItems = galleryItems
                 <img
             class="gallery__image"
             src="${galleryItem.preview}"
-            data-source="${galleryItem.original}"
             alt="${galleryItem.description}"
-            >
-            </img>
+              />
             </a>
     </li>`
   )
@@ -23,3 +21,5 @@ const listItems = galleryItems
 gallery.insertAdjacentHTML("afterbegin", listItems);
 
 console.log(galleryItems);
+
+
