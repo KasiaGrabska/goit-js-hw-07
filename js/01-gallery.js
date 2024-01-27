@@ -22,4 +22,8 @@ const listItems = galleryItems
 
 gallery.insertAdjacentHTML("afterbegin", listItems);
 
+gallery.addEventListener("click", (event) => {
+  event.preventDefault();
+});
+
 console.log(galleryItems);
