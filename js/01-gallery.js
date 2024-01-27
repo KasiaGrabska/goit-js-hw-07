@@ -14,7 +14,6 @@ const listItems = galleryItems
             data-source="${galleryItem.original}"
             alt="${galleryItem.description}"
             >
-            </img>
             </a>
     </li>`
   )
@@ -22,8 +21,30 @@ const listItems = galleryItems
 
 gallery.insertAdjacentHTML("afterbegin", listItems);
 
+let activeLightbox;
+
 gallery.addEventListener("click", (event) => {
   event.preventDefault();
+
+  const clickedElement = event.target;
+  if (clickedElement.nodeName !== "IMG") {
+    return;
+  }
+
+  const largeImageUrl = clickedElement.dataset.source;
+
+  const lightbox = basicLightbox.create(`
+    <img src="${largeImageUrl}" class="gallery__image">
+  `);
+  lightbox.show();
+
+  activeLightbox = lightbox;
 });
 
-console.log(galleryItems);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && activeLightbox) {
+    activeLightbox.close();
+
+    activeLightbox = null;
+  }
+});
