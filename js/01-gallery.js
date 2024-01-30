@@ -1,6 +1,5 @@
 import { galleryItems } from "./gallery-items.js";
 
-//zmienna za pomocą, której dostajemy się do galeri
 const gallery = document.querySelector(".gallery");
 
 const listItems = galleryItems
@@ -33,18 +32,26 @@ gallery.addEventListener("click", (event) => {
 
   const largeImageUrl = clickedElement.dataset.source;
 
-  const lightbox = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src="${largeImageUrl}" class="gallery__image">
-  `);
-  lightbox.show();
+  `,
+    {
+      onShow: (instance) => {
+        document.addEventListener("keydown", onEscape);
+        activeLightbox = instance;
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", onEscape);
+        activeLightbox = null;
+      },
+    }
+  );
 
-  activeLightbox = lightbox;
+  instance.show();
 });
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && activeLightbox) {
-    activeLightbox.close();
-
-    activeLightbox = null;
-  }
-});
+function onEscape(event) {
+  if (event.key !== "Escape" || !activeLightbox) return;
+  activeLightbox.close();
+}
